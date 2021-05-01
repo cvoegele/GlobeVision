@@ -127,14 +127,16 @@ public class IcosahedronBuilder : MonoBehaviour
             var parentPos = transform.position;
 
             GameObject meshHolder = new GameObject();
-            meshHolder.transform.parent = transform;
+           
+            //meshHolder.transform.position = transform.position;
+            //meshHolder.transform.parent = transform;
 
             Mesh mesh = new Mesh();
             MeshFilter meshFilter = meshHolder.AddComponent<MeshFilter>();
             MeshRenderer renderer = meshHolder.AddComponent<MeshRenderer>();
             renderer.material = meshMaterial;
             meshFilter.mesh = mesh;
-            mesh.vertices = new[] {parentPos + a, parentPos + b, parentPos + c};
+            mesh.vertices = new[] {a, b, c};
             mesh.normals = new[] {a.normalized, b.normalized, c.normalized};
             mesh.triangles = new[] {0, 1, 2};
 
