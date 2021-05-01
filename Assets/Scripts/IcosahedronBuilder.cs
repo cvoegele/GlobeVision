@@ -16,10 +16,6 @@ public class IcosahedronBuilder : MonoBehaviour
     void Start()
     {
         BuildIcosahedron(icosahedronResolution);
-
-        foreach (var vertex in vertices)
-        {
-        }
     }
 
     private GameObject CreatePoint(Vector3 pos)
@@ -34,14 +30,6 @@ public class IcosahedronBuilder : MonoBehaviour
         points.Add(pos, point);
 
         return point;
-    }
-
-    private void OnDrawGizmos()
-    {
-        foreach (var vertex in vertices)
-        {
-            Gizmos.DrawSphere(vertex, 0.1f);
-        }
     }
 
     private void BuildIcosahedron(int depth)
@@ -110,7 +98,6 @@ public class IcosahedronBuilder : MonoBehaviour
                 vertices.Add(a);
                 CreatePoint(a);
             }
-
 
             if (!vertices.Contains(b))
             {
