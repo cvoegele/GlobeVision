@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 
-public class IcosahedronBuilder : MonoBehaviour
+public class SphereBuilder : MonoBehaviour
 {
     private readonly List<Vector3> vertices = new List<Vector3>();
     private Dictionary<Vector3, GameObject> points = new Dictionary<Vector3, GameObject>();
@@ -15,7 +11,7 @@ public class IcosahedronBuilder : MonoBehaviour
     public Material[] materials;
 
     // Start is called before the first frame update
-    void Start()
+    public void Setup()
     {
         BuildIcosahedron(icosahedronResolution);
     }
@@ -191,26 +187,34 @@ public class IcosahedronBuilder : MonoBehaviour
         }
     }
 
-    public void AssignDataSet(DataSet dataSet, int setIndex)
+    public void AssignDataSet(DataSet dataSet, Rank setIndex, float zeroValue, float badValue, float scale)
     {
-        if (points.Count != dataSet.Champions.Count)
+        if (points.Count < dataSet.Champions.Count)
         {
             Debug.LogError("There arent enough points to display all points");
         }
 
         List<KeyValuePair<Vector3, GameObject>> list = points.ToList();
+        var comp = new Vector3Comparer();
+        list.Sort(((pair0, pair1) => comp.Compare(pair0.Key, pair1.Key)));
         int i = 0;
-        
+
         foreach (var dataSetChampion in dataSet.Champions)
         {
-            var values = dataSetChampion.rankSets[setIndex];
+            var values = dataSetChampion.rankSets[(int) setIndex];
 
-            var point = list[i];
-            PointPositioner positioner = point.Value.GetComponent<PointPositioner>();
+            if (i < points.Count)
+            {
+                var point = list[i];
+                PointPositioner positioner = point.Value.GetComponent<PointPositioner>();
 
-            positioner.value = values.winrate;
-            positioner.zeroValue = 50;
-            positioner.badValue = 46;
+                positioner.value = values.winrate;
+                positioner.zeroValue = zeroValue;
+                positioner.badValue = badValue;
+                positioner.scale = scale;
+                i++;
+            }
+            
         }
     }
 }

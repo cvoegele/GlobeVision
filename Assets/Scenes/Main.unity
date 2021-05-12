@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.43678662, g: 0.4844073, b: 0.56466454, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -957,12 +957,12 @@ GameObject:
   - component: {fileID: 353355489}
   - component: {fileID: 353355488}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: DataManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &353355488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,6 +975,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06c590bdd703a8246b28269916631b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sphereBuilderHolder: {fileID: 1969047122}
+  zeroValue: 50
+  badValue: 48
+  scale: 0.08
 --- !u!4 &353355489
 Transform:
   m_ObjectHideFlags: 0
@@ -1115,6 +1119,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 420728904}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &420728903
@@ -1624,15 +1629,15 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
+    m_Type: 1
+    m_Resolution: 3
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -1681,13 +1686,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 633586504}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.68463486, y: -0, z: -0, w: 0.72888625}
+  m_LocalPosition: {x: 0, y: 0.04, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 86.414, y: 0, z: 0}
 --- !u!4 &713441707 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9202321889366935499, guid: 00d62673906fb0c4cb62b4cfec8e04cf,
@@ -4235,7 +4240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4d062307c2a76499cbc6cd8031584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icosahedronResolution: 3
+  icosahedronResolution: 2
   materials:
   - {fileID: 2100000, guid: 7204d6b395e0d084689779b02921594c, type: 2}
   - {fileID: 2100000, guid: 109d87dbaa685d8439c43e1b01e3cce0, type: 2}

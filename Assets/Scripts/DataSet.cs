@@ -10,5 +10,10 @@ namespace DefaultNamespace
         {
             Champions = champions;
         }
+
+        public void SortDataSetOnWinrate(Rank rank)
+        {
+            Champions.Sort((champ0, champ1) => (int) (champ0.rankSets[(int) rank].winrate - champ1.rankSets[(int) rank].winrate));
+        }
     }
 }
