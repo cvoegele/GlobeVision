@@ -16,13 +16,12 @@ public class PointPositioner : MonoBehaviour
 
     public Material[] materials;
 
-    private Vector3 initialLocalPosition;
+    public Vector3 initialLocalPosition;
     private float prevValue;
 
     private void Awake()
     {
-        initialLocalPosition = transform.localPosition;
-        prevValue = value;
+        prevValue = -1;
     }
 
     private void Update()

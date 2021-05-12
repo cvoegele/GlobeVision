@@ -8,7 +8,9 @@ public class SphereBuilder : MonoBehaviour
     private readonly List<Vector3> vertices = new List<Vector3>();
     private Dictionary<Vector3, GameObject> points = new Dictionary<Vector3, GameObject>();
     public int icosahedronResolution;
-    public Material[] materials;
+    public GameObject vertexPrefab;
+    public Material startMaterial;
+    public ChampionInformationSetter championInformationSetter;
 
     // Start is called before the first frame update
     public void Setup()
@@ -18,23 +20,17 @@ public class SphereBuilder : MonoBehaviour
 
     private GameObject CreatePoint(Vector3 pos)
     {
-        GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        point.transform.parent = transform;
+        GameObject point = Instantiate(vertexPrefab, transform);
         point.transform.localPosition = pos;
         point.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         // point.AddComponent<NearInteractionGrabbable>();
         // point.AddComponent<ObjectManipulator>();
-        PointPositioner positioner = point.AddComponent<PointPositioner>();
-        positioner.scale = 1;
+        PointPositioner positioner = point.GetComponent<PointPositioner>();
         positioner.normalOnSphere = pos.normalized;
-        positioner.value = 1;
-        positioner.zeroValue = 1;
-        positioner.badValue = 0.8f;
         positioner.connectedMeshes = new List<Mesh>();
         positioner.connectedMeshRenderers = new List<MeshRenderer>();
         positioner.indexPerConnectedMesh = new List<int>();
-        positioner.materials = materials;
-
+        positioner.initialLocalPosition = pos;
         points.Add(pos, point);
 
         return point;
@@ -134,7 +130,7 @@ public class SphereBuilder : MonoBehaviour
 
             MeshFilter meshFilter = meshHolder.AddComponent<MeshFilter>();
             MeshRenderer meshRenderer = meshHolder.AddComponent<MeshRenderer>();
-            meshRenderer.material = materials[0];
+            meshRenderer.material = startMaterial;
             meshFilter.mesh = mesh;
 
             mesh.RecalculateBounds();
@@ -213,6 +209,10 @@ public class SphereBuilder : MonoBehaviour
                 positioner.badValue = badValue;
                 positioner.scale = scale;
                 i++;
+
+                SetData setData = point.Value.GetComponent<SetData>();
+                setData.data = dataSetChampion;
+                setData.ChampionInformationSetter = championInformationSetter;
             }
             
         }
