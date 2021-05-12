@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using DefaultNamespace;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
@@ -10,7 +12,7 @@ public class IcosahedronBuilder : MonoBehaviour
     private readonly List<Vector3> vertices = new List<Vector3>();
     private Dictionary<Vector3, GameObject> points = new Dictionary<Vector3, GameObject>();
     public int icosahedronResolution;
-    public Material meshMaterial;
+    public Material[] materials;
 
     // Start is called before the first frame update
     void Start()
@@ -24,14 +26,25 @@ public class IcosahedronBuilder : MonoBehaviour
         point.transform.parent = transform;
         point.transform.localPosition = pos;
         point.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-        point.AddComponent<NearInteractionGrabbable>();
-        point.AddComponent<ObjectManipulator>();
+        // point.AddComponent<NearInteractionGrabbable>();
+        // point.AddComponent<ObjectManipulator>();
+        PointPositioner positioner = point.AddComponent<PointPositioner>();
+        positioner.scale = 1;
+        positioner.normalOnSphere = pos.normalized;
+        positioner.value = 1;
+        positioner.zeroValue = 1;
+        positioner.badValue = 0.8f;
+        positioner.connectedMeshes = new List<Mesh>();
+        positioner.connectedMeshRenderers = new List<MeshRenderer>();
+        positioner.indexPerConnectedMesh = new List<int>();
+        positioner.materials = materials;
 
         points.Add(pos, point);
 
         return point;
     }
 
+    
     private void BuildIcosahedron(int depth)
     {
         const float x = 0.525731112119133606f;
@@ -93,54 +106,73 @@ public class IcosahedronBuilder : MonoBehaviour
         {
             //at this point we know how the triangle is formed
 
+            GameObject A = null, B = null, C = null;
+
             if (!vertices.Contains(a))
             {
                 vertices.Add(a);
-                CreatePoint(a);
+                A = CreatePoint(a);
             }
 
             if (!vertices.Contains(b))
             {
                 vertices.Add(b);
-                CreatePoint(b);
+                B = CreatePoint(b);
             }
 
             if (!vertices.Contains(c))
             {
                 vertices.Add(c);
-                CreatePoint(c);
+                C = CreatePoint(c);
             }
 
-            var parentPos = transform.position;
-
-            GameObject meshHolder = new GameObject();
-           
-            //meshHolder.transform.position = transform.position;
-            //meshHolder.transform.parent = transform;
+            GameObject meshHolder = new GameObject("MeshHolder");
+            meshHolder.transform.position = transform.position;
+            meshHolder.transform.parent = transform;
 
             Mesh mesh = new Mesh();
-            MeshFilter meshFilter = meshHolder.AddComponent<MeshFilter>();
-            MeshRenderer renderer = meshHolder.AddComponent<MeshRenderer>();
-            renderer.material = meshMaterial;
-            meshFilter.mesh = mesh;
+
             mesh.vertices = new[] {a, b, c};
             mesh.normals = new[] {a.normalized, b.normalized, c.normalized};
             mesh.triangles = new[] {0, 1, 2};
 
-            var aPoint = points[a];
-            MeshMover aMeshMover = aPoint.AddComponent<MeshMover>();
-            aMeshMover.mesh = mesh;
-            aMeshMover.meshIndex = 0;
+            MeshFilter meshFilter = meshHolder.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = meshHolder.AddComponent<MeshRenderer>();
+            meshRenderer.material = materials[0];
+            meshFilter.mesh = mesh;
 
-            var bPoint = points[b];
-            MeshMover bMeshMover = bPoint.AddComponent<MeshMover>();
-            bMeshMover.mesh = mesh;
-            bMeshMover.meshIndex = 1; 
+            mesh.RecalculateBounds();
 
-            var cPoint = points[c];
-            MeshMover cMeshMover = cPoint.AddComponent<MeshMover>();
-            cMeshMover.mesh = mesh;
-            cMeshMover.meshIndex = 2;
+            if (A is null)
+            {
+                A = points[a];
+            }
+            
+            var positionerA = A.GetComponent<PointPositioner>();
+            positionerA.connectedMeshes.Add(mesh);
+            positionerA.connectedMeshRenderers.Add(meshRenderer);
+            positionerA.indexPerConnectedMesh.Add(0);
+
+            if (B is null)
+            {
+                B = points[b];
+            }
+
+            var positionerB = B.GetComponent<PointPositioner>();
+            positionerB.connectedMeshes.Add(mesh);
+            positionerB.connectedMeshRenderers.Add(meshRenderer);
+            positionerB.indexPerConnectedMesh.Add(1);
+
+            if (C is null)
+            {
+                C = points[c];
+            }
+
+            var positionerC = C.GetComponent<PointPositioner>();
+            positionerC.connectedMeshes.Add(mesh);
+            positionerC.connectedMeshRenderers.Add(meshRenderer);
+            positionerC.indexPerConnectedMesh.Add(2);
+
         }
         else
         {
@@ -156,6 +188,29 @@ public class IcosahedronBuilder : MonoBehaviour
             SubdivideIcosahedron(b, e, d, depth - 1);
             SubdivideIcosahedron(c, f, e, depth - 1);
             SubdivideIcosahedron(d, e, f, depth - 1);
+        }
+    }
+
+    public void AssignDataSet(DataSet dataSet, int setIndex)
+    {
+        if (points.Count != dataSet.Champions.Count)
+        {
+            Debug.LogError("There arent enough points to display all points");
+        }
+
+        List<KeyValuePair<Vector3, GameObject>> list = points.ToList();
+        int i = 0;
+        
+        foreach (var dataSetChampion in dataSet.Champions)
+        {
+            var values = dataSetChampion.rankSets[setIndex];
+
+            var point = list[i];
+            PointPositioner positioner = point.Value.GetComponent<PointPositioner>();
+
+            positioner.value = values.winrate;
+            positioner.zeroValue = 50;
+            positioner.badValue = 46;
         }
     }
 }
