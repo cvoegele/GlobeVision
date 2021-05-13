@@ -13,7 +13,7 @@ public class SetData : MonoBehaviour
         if (data != null)
         {
             ChampionInformationSetter.SetInformation(data);
-        }
+        } 
        
     }
 }

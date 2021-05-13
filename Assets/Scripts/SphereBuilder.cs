@@ -216,5 +216,14 @@ public class SphereBuilder : MonoBehaviour
             }
             
         }
+
+        //disable rest of points
+        if (i < points.Count)
+        {
+            for (int j = i; j < points.Count; j++)
+            {
+                list[j].Value.SetActive(false);
+            }
+        }
     }
 }

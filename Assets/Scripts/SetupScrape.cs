@@ -7,6 +7,7 @@ public class SetupScrape : MonoBehaviour
     public float zeroValue;
     public float badValue;
     public float scale;
+    public float sphereScale;
     
     void Start()
     {
@@ -15,5 +16,6 @@ public class SetupScrape : MonoBehaviour
         var builder = sphereBuilderHolder.GetComponent<SphereBuilder>();
         builder.Setup();
         builder.AssignDataSet(set, Rank.PlatinumPlus, zeroValue, badValue, scale);
+        sphereBuilderHolder.transform.localScale = new Vector3(sphereScale,sphereScale,sphereScale);
     }
 }

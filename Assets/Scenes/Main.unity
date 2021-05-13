@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43678662, g: 0.4844073, b: 0.56466454, a: 1}
+  m_IndirectSpecularColor: {r: 0.43678632, g: 0.4844072, b: 0.5646639, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -979,6 +979,7 @@ MonoBehaviour:
   zeroValue: 50
   badValue: 48
   scale: 0.08
+  sphereScale: 0.5
 --- !u!4 &353355489
 Transform:
   m_ObjectHideFlags: 0
@@ -3428,7 +3429,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.1292212, y: 0.77226114, z: 0.0026415586, w: -0.17824697}
+  m_margin: {x: 0.1292212, y: 0.77226114, z: -0.1810832, w: -0.17824697}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4195,7 +4196,7 @@ RectTransform:
   m_GameObject: {fileID: 1699227619}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.125, y: 0.125, z: 1}
   m_Children:
   - {fileID: 1672860806}
   - {fileID: 1395552445}
@@ -4273,8 +4274,8 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   referenceDirection: 1
-  minDistance: 5
-  maxDistance: 6
+  minDistance: 1
+  maxDistance: 1.5
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4913,7 +4914,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.1292212, y: 0.77226114, z: 0.0026415586, w: -0.17824697}
+  m_margin: {x: 0.1292212, y: 0.77226114, z: -0.18697774, w: -0.17824697}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5650,7 +5651,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969047122}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

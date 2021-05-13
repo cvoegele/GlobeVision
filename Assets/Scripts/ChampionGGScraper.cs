@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using HtmlAgilityPack;
 using UnityEngine;
 
@@ -85,6 +86,8 @@ namespace DefaultNamespace
                 champName = champName.Replace("bot", "");
                 champName = champName.Replace("support", "");
                 champName = champName.Replace("tier", "");
+                champName = champName.Replace("#x27;", "'");
+                champName = champName.Replace("amp;", "&");
 
                 var percentageSplits = splits[2].Split(new[] {"%"}, StringSplitOptions.None);
 

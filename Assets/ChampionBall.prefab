@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3642745655487275968}
   - component: {fileID: 5605661846012172339}
   - component: {fileID: -6041030209808547742}
+  - component: {fileID: 1295917985563916362}
   m_Layer: 0
   m_Name: ChampionBall
   m_TagString: Untagged
@@ -168,8 +169,8 @@ MonoBehaviour:
   twoHandedManipulationType: 0
   allowFarManipulation: 1
   useForcesForNearManipulation: 0
-  oneHandRotationModeNear: 1
-  oneHandRotationModeFar: 1
+  oneHandRotationModeNear: 0
+  oneHandRotationModeFar: 0
   releaseBehavior: 3
   smoothingFar: 1
   smoothingNear: 1
@@ -215,3 +216,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChampionInformationSetter: {fileID: 0}
+--- !u!114 &1295917985563916362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7562531094845719286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149fa3ae453128b41940b5caa905f8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handType: 3
+  proximityType: 3
+  constraintOnMovement: -1
+  useLocalSpaceForConstraint: 0
