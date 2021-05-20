@@ -3,6 +3,7 @@
     public class Champion
     {
         public string name;
+        public string iconName;
 
         public PercentSet[] rankSets;
         
@@ -15,6 +16,11 @@
             this.winrate = winrate;
             this.popularity = popularity;
             this.rankSets = new PercentSet[rankSets];
+            
+            var IconName = name.Replace(" ", "");
+            IconName = IconName.Replace("&", "");
+            IconName = IconName.Replace("\'", "");
+            this.iconName = IconName;
         }
 
         public override string ToString()

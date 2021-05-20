@@ -195,8 +195,9 @@ public class SphereBuilder : MonoBehaviour
         list.Sort(((pair0, pair1) => comp.Compare(pair0.Key, pair1.Key)));
         int i = 0;
 
-        foreach (var dataSetChampion in dataSet.Champions)
+        for (var index = 0; index < dataSet.Champions.Count; index++)
         {
+            var dataSetChampion = dataSet.Champions[index];
             var values = dataSetChampion.rankSets[(int) setIndex];
 
             if (i < points.Count)
@@ -213,8 +214,11 @@ public class SphereBuilder : MonoBehaviour
                 SetData setData = point.Value.GetComponent<SetData>();
                 setData.data = dataSetChampion;
                 setData.ChampionInformationSetter = championInformationSetter;
+                point.Value.GetComponent<MeshRenderer>().material.mainTexture =
+                    Resources.Load($"ChampionIcons/{dataSetChampion.iconName}_0") as Texture;
+
+                positioner.SetValue();
             }
-            
         }
 
         //disable rest of points

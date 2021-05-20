@@ -17,48 +17,48 @@ public class PointPositioner : MonoBehaviour
     public Material[] materials;
 
     public Vector3 initialLocalPosition;
-    private float prevValue;
 
     private void Awake()
     {
-        prevValue = -1;
+        SetValue();
     }
 
-    private void Update()
+    public void SetValue()
     {
-        if (Math.Abs(prevValue - value) > 0.001)
+        //set Position based on value
+        var newPosition = (value - zeroValue) * scale * normalOnSphere;
+        transform.localPosition = initialLocalPosition + newPosition;
+
+        //update Position based on value
+        for (int i = 0; i < connectedMeshes.Count; i++)
         {
-            //set Position based on value
-            var newPosition = (value - zeroValue) * scale * normalOnSphere;
-            transform.localPosition = initialLocalPosition + newPosition;
-
-            //update Position based on value
-            for (int i = 0; i < connectedMeshes.Count; i++)
-            {
-                var mesh = connectedMeshes[i];
-                var copiedVertices = mesh.vertices;
-                copiedVertices[indexPerConnectedMesh[i]] = initialLocalPosition + newPosition;
-                mesh.vertices = copiedVertices;
-            }
-
-            //update color based on value
-
-            foreach (var meshRenderer in connectedMeshRenderers)
-            {
-                if (value <= badValue)
-                {
-                    meshRenderer.material = materials[1];
-                } else  if (value <= zeroValue)
-                {
-                    meshRenderer.material = materials[0];
-                }
-                else
-                {
-                    meshRenderer.material = materials[2];
-                }
-            }
-
-            prevValue = value;
+            var mesh = connectedMeshes[i];
+            var copiedVertices = mesh.vertices;
+            copiedVertices[indexPerConnectedMesh[i]] = initialLocalPosition + newPosition;
+            mesh.vertices = copiedVertices;
         }
+
+        //update color based on value
+        foreach (var meshRenderer in connectedMeshRenderers)
+        {
+            if (value <= badValue)
+            {
+                meshRenderer.material = materials[1];
+            }
+            else if (value <= zeroValue)
+            {
+                meshRenderer.material = materials[0];
+            }
+            else
+            {
+                meshRenderer.material = materials[2];
+            }
+        }
+    }
+
+    public void Update()
+    {
+        //rotate ball towards camera
+        transform.rotation = Quaternion.LookRotation(-Camera.main.transform.forward, Camera.main.transform.up);
     }
 }

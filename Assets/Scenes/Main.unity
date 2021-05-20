@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43678632, g: 0.4844072, b: 0.5646639, a: 1}
+  m_IndirectSpecularColor: {r: 0.43678662, g: 0.4844073, b: 0.56466454, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2232,7 +2232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4d062307c2a76499cbc6cd8031584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icosahedronResolution: 2
+  icosahedronResolution: 3
   vertexPrefab: {fileID: 7562531094845719286, guid: 9dc260367266966448ee4d96b451ff74,
     type: 3}
   startMaterial: {fileID: 2100000, guid: 7204d6b395e0d084689779b02921594c, type: 2}
@@ -2268,7 +2268,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d6e4470b9866a2148a3cb55368a2ebb3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
