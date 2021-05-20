@@ -11,10 +11,12 @@ public class SphereBuilder : MonoBehaviour
     public GameObject vertexPrefab;
     public Material startMaterial;
     public ChampionInformationSetter championInformationSetter;
+    public Rank rank;
 
     // Start is called before the first frame update
     public void Setup()
     {
+        championInformationSetter.rank = rank;
         BuildIcosahedron(icosahedronResolution);
     }
 
@@ -36,7 +38,7 @@ public class SphereBuilder : MonoBehaviour
         return point;
     }
 
-    
+
     private void BuildIcosahedron(int depth)
     {
         const float x = 0.525731112119133606f;
@@ -139,7 +141,7 @@ public class SphereBuilder : MonoBehaviour
             {
                 A = points[a];
             }
-            
+
             var positionerA = A.GetComponent<PointPositioner>();
             positionerA.connectedMeshes.Add(mesh);
             positionerA.connectedMeshRenderers.Add(meshRenderer);
@@ -164,7 +166,6 @@ public class SphereBuilder : MonoBehaviour
             positionerC.connectedMeshes.Add(mesh);
             positionerC.connectedMeshRenderers.Add(meshRenderer);
             positionerC.indexPerConnectedMesh.Add(2);
-
         }
         else
         {
@@ -183,7 +184,7 @@ public class SphereBuilder : MonoBehaviour
         }
     }
 
-    public void AssignDataSet(DataSet dataSet, Rank setIndex, float zeroValue, float badValue, float scale)
+    public void AssignDataSet(DataSet dataSet, float zeroValue, float badValue, float scale)
     {
         if (points.Count < dataSet.Champions.Count)
         {
@@ -192,13 +193,13 @@ public class SphereBuilder : MonoBehaviour
 
         List<KeyValuePair<Vector3, GameObject>> list = points.ToList();
         var comp = new Vector3Comparer();
-        list.Sort(((pair0, pair1) => comp.Compare(pair0.Key, pair1.Key)));
+        //list.Sort(((pair0, pair1) => comp.Compare(pair0.Key, pair1.Key)));
         int i = 0;
 
         for (var index = 0; index < dataSet.Champions.Count; index++)
         {
             var dataSetChampion = dataSet.Champions[index];
-            var values = dataSetChampion.rankSets[(int) setIndex];
+            var values = dataSetChampion.rankSets[(int) rank];
 
             if (i < points.Count)
             {

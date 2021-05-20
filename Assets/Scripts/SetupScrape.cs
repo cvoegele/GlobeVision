@@ -15,7 +15,7 @@ public class SetupScrape : MonoBehaviour
         set.SortDataSetOnWinrate(Rank.PlatinumPlus);
         var builder = sphereBuilderHolder.GetComponent<SphereBuilder>();
         builder.Setup();
-        builder.AssignDataSet(set, Rank.PlatinumPlus, zeroValue, badValue, scale);
+        builder.AssignDataSet(set, zeroValue, badValue, scale);
         sphereBuilderHolder.transform.localScale = new Vector3(sphereScale,sphereScale,sphereScale);
     }
 }

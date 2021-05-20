@@ -1615,6 +1615,7 @@ MonoBehaviour:
   championImage: {fileID: 1672860807}
   winrateText: {fileID: 1484539164}
   popularityText: {fileID: 1723259223}
+  rank: 0
 --- !u!1001 &1702767384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2232,11 +2233,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4d062307c2a76499cbc6cd8031584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icosahedronResolution: 3
+  icosahedronResolution: 2
   vertexPrefab: {fileID: 7562531094845719286, guid: 9dc260367266966448ee4d96b451ff74,
     type: 3}
   startMaterial: {fileID: 2100000, guid: 7204d6b395e0d084689779b02921594c, type: 2}
   championInformationSetter: {fileID: 1699227630}
+  rank: 6
 --- !u!135 &1969047127
 SphereCollider:
   m_ObjectHideFlags: 0

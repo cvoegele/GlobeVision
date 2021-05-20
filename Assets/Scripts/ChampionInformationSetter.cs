@@ -9,6 +9,7 @@ public class ChampionInformationSetter : MonoBehaviour
     public RawImage championImage;
     public TextMeshPro winrateText;
     public TextMeshPro popularityText;
+    public Rank rank;
 
     public void SetInformation(Champion champion)
     {
@@ -16,7 +17,7 @@ public class ChampionInformationSetter : MonoBehaviour
         championImage.texture = image;
 
         championName.text = champion.name;
-        winrateText.text = $"{champion.winrate:0.00}%";
-        popularityText.text = $"{champion.popularity:0.00}%";
+        winrateText.text = $"{champion.rankSets[(int) rank].winrate:0.00}%";
+        popularityText.text = $"{champion.rankSets[(int) rank].pop:0.00}%";
     }
 }
