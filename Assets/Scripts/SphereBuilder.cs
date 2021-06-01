@@ -17,8 +17,8 @@ public class SphereBuilder : MonoBehaviour
     // Start is called before the first frame update
     public void Setup()
     {
-        championInformationSetter.rank = rank;
-        championInformationSetter.position = position;
+        championInformationSetter.Rank = rank;
+        championInformationSetter.Position = position;
         BuildIcosahedron(icosahedronResolution);
     }
 
