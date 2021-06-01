@@ -1,49 +1,50 @@
-﻿namespace DefaultNamespace
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DefaultNamespace;
+
+public class Champion
 {
-    public class Champion
+    public readonly string name;
+    public readonly string iconName;
+
+    public readonly Dictionary<Tuple<Rank, Position>, RankSet> rankSets;
+    
+    public Champion(string name)
     {
-        public string name;
-        public string iconName;
-
-        public PercentSet[] rankSets;
+        this.name = name;
+        rankSets = new Dictionary<Tuple<Rank, Position>, RankSet>();
         
-        public float winrate;
-        public float popularity;
+        iconName = name.Replace(" ", "");
+        iconName = iconName.Replace("&", "");
+        iconName = iconName.Replace("\'", "");
+    }
 
-        public Champion(string name, float winrate, float popularity, int rankSets)
-        {
-            this.name = name;
-            this.winrate = winrate;
-            this.popularity = popularity;
-            this.rankSets = new PercentSet[rankSets];
-            
-            var IconName = name.Replace(" ", "");
-            IconName = IconName.Replace("&", "");
-            IconName = IconName.Replace("\'", "");
-            this.iconName = IconName;
-        }
+    public RankSet GetRankSet(Rank rank, Position position)
+    {
+        return rankSets.FirstOrDefault(pair => Equals(pair.Key, new Tuple<Rank, Position>(rank, position))).Value;
+    }
+    
+    public override string ToString()
+    {
+        return $"{name}: has {rankSets.Count} many rank sets";
+    }
 
-        public override string ToString()
-        {
-            return $"{name}: win: {winrate}, pop: {popularity}, {rankSets.Length}";
-        }
+    protected bool Equals(Champion other)
+    {
+        return name == other.name;
+    }
 
-        protected bool Equals(Champion other)
-        {
-            return name == other.name;
-        }
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((Champion) obj);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Champion) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return (name != null ? name.GetHashCode() : 0);
-        }
+    public override int GetHashCode()
+    {
+        return (name != null ? name.GetHashCode() : 0);
     }
 }

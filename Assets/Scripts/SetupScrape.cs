@@ -11,8 +11,7 @@ public class SetupScrape : MonoBehaviour
     
     void Start()
     {
-        var set = ChampionGGScraper.GetAll();
-        set.SortDataSetOnWinrate(Rank.PlatinumPlus);
+        var set = ChampionGgScraper.GetAll();
         var builder = sphereBuilderHolder.GetComponent<SphereBuilder>();
         builder.Setup();
         builder.AssignDataSet(set, zeroValue, badValue, scale);

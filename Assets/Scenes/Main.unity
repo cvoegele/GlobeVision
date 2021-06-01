@@ -1616,6 +1616,7 @@ MonoBehaviour:
   winrateText: {fileID: 1484539164}
   popularityText: {fileID: 1723259223}
   rank: 0
+  position: 0
 --- !u!1001 &1702767384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2238,7 +2239,8 @@ MonoBehaviour:
     type: 3}
   startMaterial: {fileID: 2100000, guid: 7204d6b395e0d084689779b02921594c, type: 2}
   championInformationSetter: {fileID: 1699227630}
-  rank: 6
+  rank: 7
+  position: 6
 --- !u!135 &1969047127
 SphereCollider:
   m_ObjectHideFlags: 0

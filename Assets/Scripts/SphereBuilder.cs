@@ -12,11 +12,13 @@ public class SphereBuilder : MonoBehaviour
     public Material startMaterial;
     public ChampionInformationSetter championInformationSetter;
     public Rank rank;
+    public Position position;
 
     // Start is called before the first frame update
     public void Setup()
     {
         championInformationSetter.rank = rank;
+        championInformationSetter.position = position;
         BuildIcosahedron(icosahedronResolution);
     }
 
@@ -196,27 +198,28 @@ public class SphereBuilder : MonoBehaviour
         //list.Sort(((pair0, pair1) => comp.Compare(pair0.Key, pair1.Key)));
         int i = 0;
 
-        for (var index = 0; index < dataSet.Champions.Count; index++)
+        foreach (var championPair in dataSet.Champions)
         {
-            var dataSetChampion = dataSet.Champions[index];
-            var values = dataSetChampion.rankSets[(int) rank];
+            var champion = championPair.Value;
+            var rankSet = champion.GetRankSet(Rank.All, Position.All);
 
-            if (i < points.Count)
+            if (rankSet != null && i < points.Count)
             {
                 var point = list[i];
+                i++;
                 PointPositioner positioner = point.Value.GetComponent<PointPositioner>();
 
-                positioner.value = values.winrate;
+                positioner.value = rankSet.winrate;
                 positioner.zeroValue = zeroValue;
                 positioner.badValue = badValue;
                 positioner.scale = scale;
-                i++;
+               
 
                 SetData setData = point.Value.GetComponent<SetData>();
-                setData.data = dataSetChampion;
+                setData.data = champion;
                 setData.ChampionInformationSetter = championInformationSetter;
                 point.Value.GetComponent<MeshRenderer>().material.mainTexture =
-                    Resources.Load($"ChampionIcons/{dataSetChampion.iconName}_0") as Texture;
+                    Resources.Load($"ChampionIcons/{champion.iconName}_0") as Texture;
 
                 positioner.SetValue();
             }
