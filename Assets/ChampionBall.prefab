@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 2269275469937771087}
   - component: {fileID: 3642745655487275968}
   - component: {fileID: 5605661846012172339}
-  - component: {fileID: -6041030209808547742}
   - component: {fileID: 1295917985563916362}
   m_Layer: 0
   m_Name: ChampionBall
@@ -111,19 +110,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51d64356c49e75a45a3351c0c4bb68c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectedMeshes: []
-  connectedMeshRenderers: []
-  indexPerConnectedMesh: 
-  normalOnSphere: {x: 0, y: 0, z: 0}
-  value: 0
-  zeroValue: 0
-  badValue: 0
-  scale: 0
   materials:
   - {fileID: 2100000, guid: 7204d6b395e0d084689779b02921594c, type: 2}
   - {fileID: 2100000, guid: 109d87dbaa685d8439c43e1b01e3cce0, type: 2}
   - {fileID: 2100000, guid: c6e3a73a3fc3e1040953f2dc6b827b55, type: 2}
   initialLocalPosition: {x: 0, y: 0, z: 0}
+  connectedMeshes: []
+  connectedMeshRenderers: []
+  indexPerConnectedMesh: 
+  normalOnSphere: {x: 0, y: 0, z: 0}
+  championInformationSetter: {fileID: 0}
 --- !u!114 &2269275469937771087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,8 +179,8 @@ MonoBehaviour:
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -6041030209808547742}
-        m_MethodName: Set
+      - m_Target: {fileID: 7562531094845719287}
+        m_MethodName: DisplayInformationOnBoard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -203,19 +199,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-6041030209808547742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7562531094845719286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2eebbcc5cbcee74782d3c23a80cfd15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ChampionInformationSetter: {fileID: 0}
 --- !u!114 &1295917985563916362
 MonoBehaviour:
   m_ObjectHideFlags: 0

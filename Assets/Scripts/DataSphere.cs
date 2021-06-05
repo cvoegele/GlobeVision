@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
 using UnityEngine;
 
-public class SphereBuilder : MonoBehaviour
+public class DataSphere : MonoBehaviour
 {
     private readonly List<Vector3> vertices = new List<Vector3>();
     private Dictionary<Vector3, GameObject> points = new Dictionary<Vector3, GameObject>();
@@ -11,15 +12,39 @@ public class SphereBuilder : MonoBehaviour
     public GameObject vertexPrefab;
     public Material startMaterial;
     public ChampionInformationSetter championInformationSetter;
+    
     public Rank rank;
     public Position position;
+    private List<SingleChampionPointManager> managers;
+    private Rank prevRank;
+    private Position prevPosition;
 
     // Start is called before the first frame update
     public void Setup()
     {
+        managers = new List<SingleChampionPointManager>();
         championInformationSetter.Rank = rank;
         championInformationSetter.Position = position;
         BuildIcosahedron(icosahedronResolution);
+    }
+
+    private void Update()
+    {
+        // if (prevPosition != position || prevRank != rank)
+        // {
+            SelectNewRankAndPosition();
+        // }
+
+        prevPosition = position;
+        prevRank = rank;
+    }
+
+    public void SelectNewRankAndPosition()
+    {
+        foreach (var manager in managers)
+        {
+            manager.SelectRankAndPosition(rank, position);
+        }
     }
 
     private GameObject CreatePoint(Vector3 pos)
@@ -29,18 +54,17 @@ public class SphereBuilder : MonoBehaviour
         point.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         // point.AddComponent<NearInteractionGrabbable>();
         // point.AddComponent<ObjectManipulator>();
-        PointPositioner positioner = point.GetComponent<PointPositioner>();
-        positioner.normalOnSphere = pos.normalized;
-        positioner.connectedMeshes = new List<Mesh>();
-        positioner.connectedMeshRenderers = new List<MeshRenderer>();
-        positioner.indexPerConnectedMesh = new List<int>();
-        positioner.initialLocalPosition = pos;
+        SingleChampionPointManager manager = point.GetComponent<SingleChampionPointManager>();
+        manager.normalOnSphere = pos.normalized;
+        manager.connectedMeshes = new List<Mesh>();
+        manager.connectedMeshRenderers = new List<MeshRenderer>();
+        manager.indexPerConnectedMesh = new List<int>();
+        manager.initialLocalPosition = pos;
         points.Add(pos, point);
 
         return point;
     }
-
-
+    
     private void BuildIcosahedron(int depth)
     {
         const float x = 0.525731112119133606f;
@@ -144,7 +168,7 @@ public class SphereBuilder : MonoBehaviour
                 A = points[a];
             }
 
-            var positionerA = A.GetComponent<PointPositioner>();
+            var positionerA = A.GetComponent<SingleChampionPointManager>();
             positionerA.connectedMeshes.Add(mesh);
             positionerA.connectedMeshRenderers.Add(meshRenderer);
             positionerA.indexPerConnectedMesh.Add(0);
@@ -154,7 +178,7 @@ public class SphereBuilder : MonoBehaviour
                 B = points[b];
             }
 
-            var positionerB = B.GetComponent<PointPositioner>();
+            var positionerB = B.GetComponent<SingleChampionPointManager>();
             positionerB.connectedMeshes.Add(mesh);
             positionerB.connectedMeshRenderers.Add(meshRenderer);
             positionerB.indexPerConnectedMesh.Add(1);
@@ -164,7 +188,7 @@ public class SphereBuilder : MonoBehaviour
                 C = points[c];
             }
 
-            var positionerC = C.GetComponent<PointPositioner>();
+            var positionerC = C.GetComponent<SingleChampionPointManager>();
             positionerC.connectedMeshes.Add(mesh);
             positionerC.connectedMeshRenderers.Add(meshRenderer);
             positionerC.indexPerConnectedMesh.Add(2);
@@ -186,51 +210,42 @@ public class SphereBuilder : MonoBehaviour
         }
     }
 
-    public void AssignDataSet(DataSet dataSet, float zeroValue, float badValue, float scale)
+    public void AssignDataSet(DataSet dataSet)
     {
-        if (points.Count < dataSet.Champions.Count)
+        dataSet.GroupDataSetByPosition();
+        var accessList = dataSet.AccessList.ToList();
+        
+        if (points.Count < accessList.Count)
         {
             Debug.LogError("There arent enough points to display all points");
         }
 
-        List<KeyValuePair<Vector3, GameObject>> list = points.ToList();
+        var pointList = points.ToList();
         var comp = new Vector3Comparer();
         //list.Sort(((pair0, pair1) => comp.Compare(pair0.Key, pair1.Key)));
-        int i = 0;
+        var i = 0;
 
-        foreach (var championPair in dataSet.Champions)
+        foreach (var rankSet in accessList)
         {
-            var champion = championPair.Value;
-            var rankSet = champion.GetRankSet(Rank.All, Position.All);
-
             if (rankSet != null && i < points.Count)
             {
-                var point = list[i];
+                var point = pointList[i];
                 i++;
-                PointPositioner positioner = point.Value.GetComponent<PointPositioner>();
-
-                positioner.value = rankSet.winrate;
-                positioner.zeroValue = zeroValue;
-                positioner.badValue = badValue;
-                positioner.scale = scale;
-               
-
-                SetData setData = point.Value.GetComponent<SetData>();
-                setData.data = champion;
-                setData.ChampionInformationSetter = championInformationSetter;
-                point.Value.GetComponent<MeshRenderer>().material.mainTexture =
-                    Resources.Load($"ChampionIcons/{champion.iconName}_0") as Texture;
-
-                positioner.SetValue();
+                var manager = point.Value.GetComponent<SingleChampionPointManager>();
+                manager.Champion = rankSet.champion;
+                manager.championInformationSetter = championInformationSetter;
+                
+                manager.SelectRankAndPosition(rank, position);
+                managers.Add(manager);
             }
         }
 
         //disable rest of points
         if (i < points.Count)
         {
-            for (int j = i; j < points.Count; j++)
+            for (var j = i; j < points.Count; j++)
             {
-                list[j].Value.SetActive(false);
+                pointList[j].Value.SetActive(false);
             }
         }
     }

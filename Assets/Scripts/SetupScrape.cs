@@ -4,17 +4,14 @@ using UnityEngine;
 public class SetupScrape : MonoBehaviour
 {
     public GameObject sphereBuilderHolder;
-    public float zeroValue;
-    public float badValue;
-    public float scale;
     public float sphereScale;
     
     void Start()
     {
         var set = ChampionGgScraper.GetAll();
-        var builder = sphereBuilderHolder.GetComponent<SphereBuilder>();
+        var builder = sphereBuilderHolder.GetComponent<DataSphere>();
         builder.Setup();
-        builder.AssignDataSet(set, zeroValue, badValue, scale);
+        builder.AssignDataSet(set);
         sphereBuilderHolder.transform.localScale = new Vector3(sphereScale,sphereScale,sphereScale);
     }
 }

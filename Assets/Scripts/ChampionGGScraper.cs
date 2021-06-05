@@ -33,6 +33,15 @@ namespace DefaultNamespace
 
             CalculateCombined();
 
+            foreach (Rank rank in Enum.GetValues(typeof(Rank)))
+            {
+                if (rank != Rank.All)
+                {
+                    CalculateForRank(rank);
+                }
+                
+            }
+
             return _dataSet;
         }
 
@@ -52,11 +61,36 @@ namespace DefaultNamespace
                 winrateSum /= dataSetChampion.Value.rankSets.Count;
                 popularitySum /= dataSetChampion.Value.rankSets.Count;
 
-                var rankSet = new RankSet(winrateSum, popularitySum, Position.All, Rank.All);
+                var rankSet = new RankSet(winrateSum, popularitySum, Position.All, Rank.All, dataSetChampion.Value);
                 dataSetChampion.Value.rankSets.Add(new Tuple<Rank, Position>(Rank.All, Position.All), rankSet);
             }
         }
 
+        private static void CalculateForRank(Rank rank)
+        {
+            foreach (var dataSetChampion in _dataSet.Champions)
+            {
+                var winrate = 0f;
+                var popularity = 0f;
+
+                var rankSetsWithGivenRank = dataSetChampion.Value.rankSets.Where(x => x.Key.Item1 == rank).ToList();
+
+                if (rankSetsWithGivenRank.Count == 0) continue;
+
+                foreach (var pair in rankSetsWithGivenRank)
+                {
+                    winrate += pair.Value.winrate;
+                    popularity += pair.Value.popularity;
+                }
+
+                winrate /= rankSetsWithGivenRank.Count;
+                popularity /= rankSetsWithGivenRank.Count;
+                
+                var rankSet = new RankSet(winrate, popularity, Position.All, rank, dataSetChampion.Value);
+                dataSetChampion.Value.rankSets.Add(new Tuple<Rank, Position>(rank, Position.All), rankSet);
+            }
+        }
+        
         public static void Get(string rankUrl, int rankIndex)
         {
             var rank = (Rank) rankIndex;
@@ -105,16 +139,18 @@ namespace DefaultNamespace
                 float.TryParse(winRate, out var winrateParsed);
                 float.TryParse(pop, out var popParsed);
 
-                var rankSet = new RankSet(winrateParsed, popParsed, position, rank);
+             
 
                 if (_dataSet.Champions.ContainsKey(champName))
                 {
                     var champion = _dataSet.Champions[champName];
+                    var rankSet = new RankSet(winrateParsed, popParsed, position, rank, champion);
                     champion.rankSets.Add(new Tuple<Rank, Position>(rank, position), rankSet);
                 }
                 else
                 {
                     var champion = new Champion(champName);
+                    var rankSet = new RankSet(winrateParsed, popParsed, position, rank, champion);
                     champion.rankSets.Add(new Tuple<Rank, Position>(rank, position), rankSet);
                     _dataSet.Champions.Add(champName, champion);
                 }
