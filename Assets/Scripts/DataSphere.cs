@@ -12,7 +12,7 @@ public class DataSphere : MonoBehaviour
     public GameObject vertexPrefab;
     public Material startMaterial;
     public ChampionInformationSetter championInformationSetter;
-    
+
     public Rank rank;
     public Position position;
     private List<SingleChampionPointManager> managers;
@@ -32,12 +32,13 @@ public class DataSphere : MonoBehaviour
     {
         // if (prevPosition != position || prevRank != rank)
         // {
-            SelectNewRankAndPosition();
+        SelectNewRankAndPosition();
         // }
 
         prevPosition = position;
         prevRank = rank;
     }
+
 
     public void SelectNewRankAndPosition()
     {
@@ -64,7 +65,7 @@ public class DataSphere : MonoBehaviour
 
         return point;
     }
-    
+
     private void BuildIcosahedron(int depth)
     {
         const float x = 0.525731112119133606f;
@@ -214,7 +215,7 @@ public class DataSphere : MonoBehaviour
     {
         dataSet.GroupDataSetByPosition();
         var accessList = dataSet.AccessList.ToList();
-        
+
         if (points.Count < accessList.Count)
         {
             Debug.LogError("There arent enough points to display all points");
@@ -234,7 +235,7 @@ public class DataSphere : MonoBehaviour
                 var manager = point.Value.GetComponent<SingleChampionPointManager>();
                 manager.Champion = rankSet.champion;
                 manager.championInformationSetter = championInformationSetter;
-                
+
                 manager.SelectRankAndPosition(rank, position);
                 managers.Add(manager);
             }
@@ -248,5 +249,71 @@ public class DataSphere : MonoBehaviour
                 pointList[j].Value.SetActive(false);
             }
         }
+    }
+
+
+    public void SetBronze()
+    {
+        this.rank = Rank.Bronze;
+    }
+
+    public void SetSilver()
+    {
+        this.rank = Rank.Silver;
+    }
+
+    public void SetGold()
+    {
+        this.rank = Rank.Gold;
+    }
+
+    public void SetPlatinum()
+    {
+        this.rank = Rank.Platinum;
+    }
+
+    public void SetDiamond()
+    {
+        this.rank = Rank.Diamond;
+    }
+
+    public void SetPlatinumPlus()
+    {
+        this.rank = Rank.PlatinumPlus;
+    }
+
+    public void SetAllRanks()
+    {
+        this.rank = Rank.All;
+    }
+
+    public void SetTop()
+    {
+        this.position = Position.Top;
+    }
+
+    public void SetJungle()
+    {
+        this.position = Position.Top;
+    }
+
+    public void SetMid()
+    {
+        this.position = Position.Mid;
+    }
+
+    public void SetBottom()
+    {
+        this.position = Position.Bottom;
+    }
+
+    public void SetSupport()
+    {
+        this.position = Position.Support;
+    }
+
+    public void SetAllPositions()
+    {
+        this.position = Position.All;
     }
 }
