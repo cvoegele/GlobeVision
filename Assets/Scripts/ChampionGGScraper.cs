@@ -42,6 +42,14 @@ namespace DefaultNamespace
                 
             }
 
+            foreach (Position position in Enum.GetValues(typeof(Position)))
+            {
+                if (position != Position.All)       
+                {
+                    CalculateForPosition(position);
+                }
+            }
+
             return _dataSet;
         }
 
@@ -89,6 +97,31 @@ namespace DefaultNamespace
                 var rankSet = new RankSet(winrate, popularity, Position.All, rank, dataSetChampion.Value);
                 dataSetChampion.Value.rankSets.Add(new Tuple<Rank, Position>(rank, Position.All), rankSet);
             }
+        }
+
+        private static void CalculateForPosition(Position position)
+        {
+            foreach (var dataSetChampion in _dataSet.Champions)
+            {
+                var winrate = 0f;
+                var popularity = 0f;
+
+                var rankSetsWithGivenRank = dataSetChampion.Value.rankSets.Where(x => x.Key.Item2 == position).ToList();
+
+                if (rankSetsWithGivenRank.Count == 0) continue;
+
+                foreach (var pair in rankSetsWithGivenRank)
+                {
+                    winrate += pair.Value.winrate;
+                    popularity += pair.Value.popularity;
+                }
+
+                winrate /= rankSetsWithGivenRank.Count;
+                popularity /= rankSetsWithGivenRank.Count;
+                
+                var rankSet = new RankSet(winrate, popularity, position, Rank.All, dataSetChampion.Value);
+                dataSetChampion.Value.rankSets.Add(new Tuple<Rank, Position>(Rank.All, position), rankSet);
+            } 
         }
         
         public static void Get(string rankUrl, int rankIndex)

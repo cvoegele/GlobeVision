@@ -67,17 +67,17 @@ public class SingleChampionPointManager : MonoBehaviour
             isPartOfStatistic = false;
         }
 
-        needsUpdate = false;
+       
     }
 
     private void UpdatePosition()
     {
         Vector3 localPosition;
-        
+
         if (isPartOfStatistic)
         {
             //set Position based on value
-            var newPosition = (value - zeroValue) * normalOnSphere;
+            var newPosition = (value - zeroValue) * scale * normalOnSphere;
             localPosition = initialLocalPosition + newPosition;
         }
         else
@@ -86,7 +86,7 @@ public class SingleChampionPointManager : MonoBehaviour
         }
 
         transform.localPosition = localPosition;
-        
+
         //update Position based on value
         for (int i = 0; i < connectedMeshes.Count; i++)
         {
@@ -116,11 +116,12 @@ public class SingleChampionPointManager : MonoBehaviour
 
     public void Update()
     {
-        // if (needsUpdate)
-        // {
-        SetValueBasedOnRankAndPosition();
-        UpdatePosition();
-        // }
+        if (needsUpdate)
+        {
+            SetValueBasedOnRankAndPosition();
+            UpdatePosition();
+            needsUpdate = false;
+        }
 
         //rotate ball towards camera
         transform.rotation = Quaternion.LookRotation(-Camera.main.transform.forward, Camera.main.transform.up);
