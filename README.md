@@ -9,3 +9,7 @@ One might be the win-rate of the champions, ban-rate or popularity.
 The Hypothesis is that this fully visual way of exploring the data can give you new insights.
 
 ![](Images/concept.png)
+
+Demo Video:
+
+[Video](https://drive.google.com/file/d/1KQGrttBetq7BiyPQCwl4bFKWRS_OC0xw/view?usp=sharing)
